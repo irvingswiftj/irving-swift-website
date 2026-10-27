@@ -1,0 +1,75 @@
+---
+import '@fontsource-variable/tiktok-sans/wdth.css';
+import '../styles/global.css';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import { SITE_TITLE, SITE_DESCRIPTION, AUTHOR } from '../consts';
+
+interface Props {
+	title?: string;
+	description?: string;
+	image?: string;
+	type?: 'website' | 'article';
+	publishedTime?: Date;
+	/** The header sits on top of a full-screen photograph (home page) */
+	overlayHeader?: boolean;
+	/** Credit lines for found pictures on this page, printed in the footer */
+	credits?: string[];
+}
+
+const {
+	title,
+	description = SITE_DESCRIPTION,
+	image,
+	type = 'website',
+	publishedTime,
+	overlayHeader = false,
+	credits = [],
+} = Astro.props;
+const fullTitle = title ? `${title} – ${SITE_TITLE}` : `${SITE_TITLE} – Notes on building software`;
+const canonical = new URL(Astro.url.pathname, Astro.site);
+const ogImage = new URL(image ?? '/favicon.png', Astro.site);
+---
+
+<!doctype html>
+<html lang="en-GB">
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<script is:inline>
+			document.documentElement.classList.add('js');
+		</script>
+		<title>{fullTitle}</title>
+		<meta name="description" content={description} />
+		<meta name="author" content={AUTHOR} />
+		<link rel="canonical" href={canonical} />
+		<link rel="icon" type="image/png" href="/favicon-48.png" sizes="48x48" />
+		<link rel="icon" type="image/png" href="/favicon.png" sizes="512x512" />
+		<link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+		<link rel="alternate" type="application/rss+xml" title={SITE_TITLE} href="/rss.xml" />
+		<link rel="sitemap" href="/sitemap-index.xml" />
+		<meta name="theme-color" content="#18232a" />
+
+		<meta property="og:site_name" content={SITE_TITLE} />
+		<meta property="og:type" content={type} />
+		<meta property="og:title" content={title ?? SITE_TITLE} />
+		<meta property="og:description" content={description} />
+		<meta property="og:url" content={canonical} />
+		<meta property="og:image" content={ogImage} />
+		{publishedTime && <meta property="article:published_time" content={publishedTime.toISOString()} />}
+		<meta name="twitter:card" content={image ? 'summary_large_image' : 'summary'} />
+		<meta name="generator" content={Astro.generator} />
+	</head>
+	<body>
+		<a class="skip-link" href="#main">Skip to content</a>
+		<Header overlay={overlayHeader} />
+		<main id="main">
+			<slot />
+		</main>
+		<Footer credits={credits} />
+
+		<script>
+			import '../scripts/motion';
+		</script>
+	</body>
+</html>

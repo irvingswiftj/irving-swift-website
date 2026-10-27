@@ -1,0 +1,22 @@
+---
+import Base from '../layouts/Base.astro';
+---
+
+<Base title="Page not found">
+	<div class="prose notfound">
+		<h1>Page not found</h1>
+		<p>That page doesn't exist — it may have been lost in the move away from WordPress.</p>
+		<p><a href="/">Back to all posts</a></p>
+	</div>
+</Base>
+
+<style>
+	.notfound {
+		margin-top: clamp(3rem, 10vw, 6rem);
+	}
+
+	h1 {
+		font-size: clamp(2rem, 5vw, 2.65rem);
+		margin: 0;
+	}
+</style>

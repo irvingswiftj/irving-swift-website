@@ -1,0 +1,47 @@
+---
+import Base from '../../layouts/Base.astro';
+import NoteIndex from '../../components/NoteIndex.astro';
+import { getPublishedPosts, categorySlug } from '../../lib/posts';
+
+export async function getStaticPaths() {
+	const posts = await getPublishedPosts();
+	const names = [...new Set(posts.flatMap((p) => p.data.categories))];
+	return names.map((name) => ({
+		params: { category: categorySlug(name) },
+		props: { name, posts: posts.filter((p) => p.data.categories.includes(name)) },
+	}));
+}
+
+const { name, posts } = Astro.props;
+---
+
+<Base title={`${name} notes`} description={`Notes by James Irving-Swift filed under ${name}.`}>
+	<section class="frame category" aria-labelledby="category-heading">
+		<div class="head">
+			<h1 id="category-heading" data-reveal>{name} notes</h1>
+			<p data-reveal style="--i: 1">
+				{posts.length} {posts.length === 1 ? 'note' : 'notes'} filed under {name}, newest first.
+			</p>
+		</div>
+		<NoteIndex posts={posts} />
+	</section>
+</Base>
+
+<style>
+	.head {
+		display: grid;
+		gap: 1rem 2rem;
+		margin: clamp(2.5rem, 7vw, 5rem) 0 clamp(2.5rem, 5vw, 4rem);
+	}
+
+	@media (min-width: 60rem) {
+		.head {
+			grid-template-columns: minmax(0, 1fr) minmax(16rem, 24rem);
+			align-items: end;
+		}
+	}
+
+	h1 {
+		font-size: var(--step-head);
+	}
+</style>

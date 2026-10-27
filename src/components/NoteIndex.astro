@@ -1,0 +1,130 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import { Image } from 'astro:assets';
+import FormattedDate from './FormattedDate.astro';
+
+interface Props {
+	posts: CollectionEntry<'posts'>[];
+}
+
+const { posts } = Astro.props;
+---
+
+<ol class="index" role="list">
+	{
+		posts.map((post, i) => (
+			<li data-reveal style={`--i: ${Math.min(i, 6)}`}>
+				<a class="row" href={`/${post.id}/`}>
+					<span class="thumb" data-wipe>
+						{post.data.cover && (
+							<Image src={post.data.cover} alt="" widths={[240, 480]} sizes="(min-width: 48rem) 15rem, 6rem" />
+						)}
+					</span>
+					<span class="text">
+						<span class="meta">
+							<FormattedDate date={post.data.pubDate} />
+							{post.data.categories.length > 0 && <> · {post.data.categories.join(', ')}</>}
+						</span>
+						<span class="title">{post.data.title}</span>
+						<span class="desc">{post.data.description}</span>
+					</span>
+				</a>
+			</li>
+		))
+	}
+</ol>
+
+<style>
+	.index {
+		list-style: none;
+		margin: 0;
+		padding: 0;
+		display: grid;
+		gap: 0.5rem;
+	}
+
+	.row {
+		display: grid;
+		grid-template-columns: 6rem minmax(0, 1fr);
+		gap: 1.25rem;
+		align-items: start;
+		padding: 1rem;
+		margin-inline: -1rem;
+		text-decoration: none;
+		transition: background-color var(--t-hover) ease;
+	}
+
+	@media (min-width: 48rem) {
+		.row {
+			grid-template-columns: 15rem minmax(0, 1fr);
+			gap: 2rem;
+			align-items: center;
+		}
+	}
+
+	.row:hover,
+	.row:focus-visible {
+		background: var(--surface);
+	}
+
+	.thumb {
+		display: block;
+		aspect-ratio: 4 / 3;
+		overflow: hidden;
+		background: var(--surface);
+	}
+
+	.thumb img {
+		width: 100%;
+		height: 100%;
+		object-fit: cover;
+		transition: transform 500ms var(--ease-out);
+	}
+
+	.row:hover .thumb img {
+		transform: scale(1.04);
+	}
+
+	.text {
+		display: grid;
+		gap: 0.4rem;
+		max-width: 46rem;
+	}
+
+	.meta {
+		font-size: var(--step-small);
+		color: var(--muted);
+		font-variant-numeric: tabular-nums;
+	}
+
+	.title {
+		font-size: clamp(1.1875rem, 1rem + 0.6vw, 1.5rem);
+		font-weight: 700;
+		line-height: 1.2;
+		color: var(--accent);
+		text-decoration: underline;
+		text-decoration-thickness: 0.06em;
+		text-underline-offset: 0.2em;
+		text-wrap: pretty;
+	}
+
+	.row:hover .title {
+		color: var(--ink);
+	}
+
+	.desc {
+		display: none;
+	}
+
+	@media (min-width: 48rem) {
+		.desc {
+			display: block;
+		}
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		.row:hover .thumb img {
+			transform: none;
+		}
+	}
+</style>

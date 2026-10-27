@@ -1,0 +1,94 @@
+---
+import { Image } from 'astro:assets';
+import logo from '../assets/favicon.webp';
+
+interface Props {
+	/** Sit on top of the home page's photograph instead of on the plain ground */
+	overlay?: boolean;
+}
+
+const { overlay = false } = Astro.props;
+const nav = [
+	{ label: 'Notes', href: '/#notes' },
+	{ label: 'About', href: '/about-james-irving-swift/' },
+	{ label: 'RSS', href: '/rss.xml' },
+];
+const path = Astro.url.pathname;
+---
+
+<header class:list={['site-header frame', { overlay }]}>
+	<a class="brand" href="/">
+		<Image src={logo} alt="" width={36} height={36} loading="eager" />
+		<span>Irving-Swift</span>
+	</a>
+	<nav aria-label="Main">
+		<ul>
+			{
+				nav.map(({ label, href }) => (
+					<li>
+						<a href={href} aria-current={path === href ? 'page' : undefined}>
+							{label}
+						</a>
+					</li>
+				))
+			}
+		</ul>
+	</nav>
+</header>
+
+<style>
+	.site-header {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		gap: 1rem;
+		padding-block: 1.25rem;
+		position: relative;
+		z-index: 5;
+	}
+
+	.overlay {
+		position: absolute;
+		inset: 0 0 auto;
+	}
+
+	.brand {
+		display: flex;
+		align-items: center;
+		gap: 0.7rem;
+		text-decoration: none;
+		font-weight: 700;
+	}
+
+	.brand img {
+		width: 36px;
+		height: 36px;
+	}
+
+	ul {
+		display: flex;
+		gap: clamp(1rem, 2.5vw, 2rem);
+		list-style: none;
+		margin: 0;
+		padding: 0;
+	}
+
+	nav a {
+		display: inline-block;
+		padding-block: 0.5rem;
+		text-decoration: none;
+		font-size: var(--step-small);
+		font-weight: 500;
+		transition:
+			color var(--t-hover) ease,
+			transform var(--t-press) var(--ease-out);
+	}
+
+	nav a:hover {
+		transform: translateY(-2px);
+	}
+
+	nav a[aria-current='page'] {
+		text-decoration: underline;
+	}
+</style>

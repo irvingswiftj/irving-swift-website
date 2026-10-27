@@ -1,0 +1,426 @@
+---
+import { Image } from 'astro:assets';
+import Base from '../layouts/Base.astro';
+import NoteIndex from '../components/NoteIndex.astro';
+import FormattedDate from '../components/FormattedDate.astro';
+import { getPublishedPosts } from '../lib/posts';
+import credits from '../assets/found/credits.json';
+
+import portrait from '../assets/uploads/2024/10/20240524_142131000_iOS-1-edited-1.jpg';
+import padel from '../assets/found/padel-court.jpg';
+import spider from '../assets/found/alfa-romeo-spider.jpg';
+import stage from '../assets/uploads/2024/10/20231120_185120825_iOS.jpg';
+
+const posts = await getPublishedPosts();
+
+// The three latest notes, pinned loosely like prints in a scrapbook: tilt, scroll drift and a slow turn
+const pinned = posts.filter((p) => p.data.cover).slice(0, 3);
+const pins = [
+	{ tilt: -4, parallax: 0.12, spin: -3 },
+	{ tilt: 5, parallax: 0.22, spin: 4 },
+	{ tilt: -2, parallax: 0.32, spin: -3 },
+];
+
+const off = [
+	{
+		img: portrait,
+		alt: 'James Irving-Swift in sunglasses and a cap',
+		name: 'James Irving-Swift',
+		role: 'CTO at VegVisits, in Andalucía',
+		text: "I've worked in software companies of every size, from a team of three to FTSE and NASDAQ-listed firms, including Tripadvisor and Amenitiz.",
+	},
+	{
+		img: padel,
+		alt: 'Two players on an indoor padel court',
+		name: 'Sport',
+		role: 'Tennis or padel, every day',
+		text: 'Find a sport you love and exercising is never a chore. Everything stands still for Arsenal matches and for Formula 1.',
+	},
+	{
+		img: spider,
+		alt: 'A silver 1990s Alfa Romeo Spider with its roof down',
+		name: 'Petrol head',
+		role: 'Alfa Spider, Goodwood Revival',
+		text: 'New and classic alike: I love the sound of a cold start and an exhaust that pops as you shift. Most years you can find me at the Goodwood Revival.',
+	},
+	{
+		img: stage,
+		alt: 'A stage of synthesisers, pianos and a mixing desk under warm light',
+		name: 'Music',
+		role: 'Piano, guitar and bass',
+		text: 'Piano first, then guitar and most recently bass. I play with a group that decides which song we can butcher next.',
+	},
+];
+
+// Credit every found picture shown on this page: the About pictures and the notes' covers
+const shown = new Set(['padel-court.jpg', 'alfa-romeo-spider.jpg']);
+const coverCredits = posts.flatMap((p) => (p.data.coverCredit ? [p.data.coverCredit] : []));
+const pageCredits = [...credits.filter((c) => shown.has(c.file)).map((c) => c.credit), ...coverCredits];
+---
+
+<Base credits={pageCredits}>
+	<section class="hero frame" aria-labelledby="title">
+		<div class="intro" data-exit>
+			<h1 id="title" data-split>My notes, but shared.</h1>
+			<p class="lede" data-reveal style="--i: 3">
+				This site is just a collection of tip-bits by James Irving-Swift, partly to share knowledge, but honestly, it is
+				just more about having a point of reference that isn't a scrapbook on my desk! If it can help anyone else, that
+				would be an added bonus.
+			</p>
+			<p data-reveal style="--i: 4">
+				<a class="button" href="#notes">Browse the notes</a>
+			</p>
+		</div>
+
+		<div class="scrapbook" aria-label="The latest notes">
+			{
+				pinned.map((post, i) => (
+					<a
+						class={`print p${i + 1}`}
+						href={`/${post.id}/`}
+						data-parallax={pins[i].parallax}
+						data-from-top
+						data-spin={pins[i].spin}
+						style={`--tilt: ${pins[i].tilt}deg; --deal: ${i}`}
+					>
+						<span class="paper">
+							<Image
+								src={post.data.cover!}
+								alt={post.data.coverAlt}
+								widths={[400, 720]}
+								sizes="(min-width: 60rem) 26vw, 55vw"
+								loading="eager"
+								fetchpriority={i === 0 ? 'high' : 'auto'}
+							/>
+							<span class="cap">
+								<span class="cap-date">
+									{i === 0 ? 'Latest · ' : ''}
+									<FormattedDate date={post.data.pubDate} />
+								</span>
+								<span class="cap-title">{post.data.title}</span>
+							</span>
+						</span>
+					</a>
+				))
+			}
+		</div>
+	</section>
+
+	<section id="notes" class="notes frame" aria-labelledby="notes-heading">
+		<div class="section-head">
+			<h2 id="notes-heading" data-split>All notes</h2>
+			<p data-reveal style="--i: 1">
+				{posts.length} notes since October 2024, newest first: setups, scripts, fixes and the odd opinion.
+			</p>
+		</div>
+		<NoteIndex posts={posts} />
+	</section>
+
+	<section id="about" class="about-band" aria-labelledby="about-heading">
+	<div class="about frame">
+		<div class="pin">
+			<h2 id="about-heading" data-split>About me</h2>
+			<p data-reveal style="--i: 1">
+				A developer, team lead and now CTO, living in Andalucía. When I'm not at a keyboard, I'm usually doing one of
+				these.
+			</p>
+			<p data-reveal style="--i: 2"><a class="button" href="/about-james-irving-swift/">More about me</a></p>
+		</div>
+		<div class="passing">
+			{
+				off.map((p, i) => (
+					<figure class="portrait" data-reveal data-parallax={i % 2 ? 0.14 : 0} style={`--i: ${i % 2}`}>
+						<span class="frame-img" data-wipe>
+							<Image src={p.img} alt={p.alt} widths={[480, 800]} sizes="(min-width: 60rem) 24vw, 80vw" />
+						</span>
+						<figcaption>
+							<span class="who">{p.name}</span>
+							<span class="role">{p.role}</span>
+							<span class="text">{p.text}</span>
+						</figcaption>
+					</figure>
+				))
+			}
+		</div>
+	</div>
+	</section>
+</Base>
+
+<style>
+	/* ---------- Hero: the old tagline beside the scrapbook of latest notes ---------- */
+	.hero {
+		display: grid;
+		gap: 3.5rem 4rem;
+		align-items: center;
+		padding-top: clamp(2rem, 6vw, 5rem);
+	}
+
+	@media (min-width: 60rem) {
+		.hero {
+			grid-template-columns: 5fr 6fr;
+			min-height: calc(100svh - 6rem);
+		}
+	}
+
+	.intro {
+		display: grid;
+		gap: 1.5rem;
+		justify-items: start;
+		/* Eases away as the page scrolls past it (--exit is written by scripts/motion.ts) */
+		opacity: calc(1 - var(--exit, 0) * 0.85);
+		translate: 0 calc(var(--exit, 0) * -4rem);
+	}
+
+	h1 {
+		font-size: clamp(2.5rem, 1.5rem + 3.6vw, 4.5rem);
+		line-height: 1.02;
+		letter-spacing: -0.03em;
+	}
+
+	.lede {
+		max-width: 34rem;
+		font-size: clamp(1.125rem, 1rem + 0.4vw, 1.375rem);
+	}
+
+	@property --tilt {
+		syntax: '<angle>';
+		inherits: false;
+		initial-value: 0deg;
+	}
+
+	@property --lift {
+		syntax: '<length>';
+		inherits: false;
+		initial-value: 0px;
+	}
+
+	.scrapbook {
+		position: relative;
+		height: clamp(26rem, 70vw, 40rem);
+	}
+
+	@media (min-width: 60rem) {
+		.scrapbook {
+			height: min(40rem, 78svh);
+		}
+	}
+
+	.print {
+		position: absolute;
+		display: block;
+		text-decoration: none;
+		rotate: calc(var(--tilt) + var(--pr, 0deg));
+		translate: 0 calc(var(--py, 0px) + var(--lift));
+		transition:
+			--tilt 500ms var(--ease-out),
+			--lift 500ms var(--ease-out);
+		animation: deal 1.1s var(--ease-expo) both;
+		animation-delay: calc(250ms + var(--deal) * 140ms);
+	}
+
+	.p1 {
+		width: 54%;
+		left: 0;
+		top: 14%;
+		z-index: 3;
+	}
+
+	.p2 {
+		width: 42%;
+		right: 0;
+		top: 0;
+		z-index: 2;
+	}
+
+	.p3 {
+		width: 40%;
+		right: 9%;
+		bottom: 0;
+		z-index: 1;
+	}
+
+	.print:hover,
+	.print:focus-visible {
+		--tilt: 0deg;
+		--lift: -12px;
+		z-index: 4;
+	}
+
+	/* Each print is a photo on mint paper, the caption written on its lower edge */
+	.paper {
+		display: grid;
+		gap: 0.7rem;
+		padding: 0.7rem 0.7rem 0.9rem;
+		background: var(--ink);
+		color: var(--bg);
+	}
+
+	.paper img {
+		width: 100%;
+		aspect-ratio: 4 / 3;
+		object-fit: cover;
+	}
+
+	.cap {
+		display: grid;
+		gap: 0.15rem;
+		padding-inline: 0.15rem;
+	}
+
+	.cap-date {
+		font-size: var(--step-small);
+	}
+
+	.cap-title {
+		font-weight: 700;
+		line-height: 1.2;
+		display: -webkit-box;
+		-webkit-line-clamp: 2;
+		-webkit-box-orient: vertical;
+		overflow: hidden;
+		text-decoration: underline;
+		text-decoration-thickness: 0.06em;
+		text-underline-offset: 0.18em;
+	}
+
+	@keyframes deal {
+		from {
+			opacity: 0;
+			transform: translateY(-3rem) rotate(9deg) scale(1.06);
+		}
+	}
+
+	@media (max-width: 40rem) {
+		.cap-title {
+			font-size: var(--step-small);
+		}
+
+		.cap-date {
+			display: none;
+		}
+	}
+
+	/* ---------- Sections ---------- */
+	.notes {
+		margin-top: clamp(6rem, 12vw, 11rem);
+	}
+
+	/* About sits on its own field of colour, a change of chapter */
+	.about-band {
+		margin-top: clamp(6rem, 12vw, 11rem);
+		padding-block: clamp(5rem, 10vw, 9rem);
+		background: var(--surface);
+	}
+
+	.section-head {
+		display: grid;
+		gap: 1rem 2rem;
+		margin-bottom: clamp(2rem, 4vw, 3rem);
+	}
+
+	@media (min-width: 60rem) {
+		.section-head {
+			grid-template-columns: minmax(0, 1fr) minmax(16rem, 26rem);
+			align-items: end;
+		}
+	}
+
+	h2 {
+		font-size: var(--step-head);
+	}
+
+	/* ---------- About: an introduction, the off-screen life beside it ---------- */
+	.about {
+		display: grid;
+		gap: 3rem 2rem;
+	}
+
+	@media (min-width: 48rem) {
+		.about {
+			grid-template-columns: 5fr 7fr;
+			align-items: start;
+		}
+	}
+
+	.pin {
+		display: grid;
+		gap: 1.5rem;
+		justify-items: start;
+	}
+
+	.pin p {
+		max-width: 26rem;
+	}
+
+	.passing {
+		display: grid;
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+		gap: 3rem 2rem;
+	}
+
+	.portrait:nth-child(even) {
+		margin-top: 30%;
+	}
+
+	@media (max-width: 40rem) {
+		.passing {
+			grid-template-columns: 1fr;
+		}
+
+		.portrait {
+			width: 80%;
+		}
+
+		.portrait:nth-child(even) {
+			margin-top: 0;
+			justify-self: end;
+		}
+	}
+
+	.portrait {
+		margin: 0;
+	}
+
+	.frame-img {
+		display: block;
+		overflow: hidden;
+	}
+
+	.portrait img {
+		width: 100%;
+		aspect-ratio: 4 / 5;
+		object-fit: cover;
+	}
+
+	.portrait figcaption {
+		display: grid;
+		gap: 0.2rem;
+		margin-top: 0.9rem;
+	}
+
+	.who {
+		font-weight: 700;
+	}
+
+	.role {
+		font-size: var(--step-small);
+		color: var(--muted);
+	}
+
+	.text {
+		margin-top: 0.4rem;
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		.intro {
+			opacity: 1;
+			translate: none;
+		}
+
+		.print {
+			animation: none;
+			transition: none;
+			translate: none;
+		}
+	}
+</style>

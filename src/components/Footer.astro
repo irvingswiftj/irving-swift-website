@@ -1,0 +1,178 @@
+---
+import { SOCIAL_LINKS } from '../consts';
+import { getPublishedPosts, categorySlug } from '../lib/posts';
+
+interface Props {
+	/** Credit lines for the found pictures shown on this page */
+	credits?: string[];
+}
+
+const { credits = [] } = Astro.props;
+const posts = await getPublishedPosts();
+const topics = [...new Set(posts.flatMap((p) => p.data.categories))].sort();
+const places = [{ label: 'Email', href: 'mailto:james@binbashtalent.com' }, ...SOCIAL_LINKS];
+const year = new Date().getFullYear();
+---
+
+<footer class="site-footer frame" id="contact">
+	<p class="name">Irving-Swift</p>
+	<p class="tagline">My notes, but shared.</p>
+
+	<div class="row">
+		<div class="places">
+			<h2 class="sr-only">Get in touch</h2>
+			<ul>
+				{
+					places.map(({ label, href }) => (
+						<li>
+							<a href={href} rel={href.startsWith('http') ? 'me noopener' : undefined}>
+								{label}
+							</a>
+						</li>
+					))
+				}
+			</ul>
+		</div>
+
+		<div class="links">
+			<div>
+				<h2>Notes by topic</h2>
+				<ul>
+					{
+						topics.map((t) => (
+							<li>
+								<a href={`/category/${categorySlug(t)}/`}>{t}</a>
+							</li>
+						))
+					}
+					<li><a href="/#notes">All notes</a></li>
+				</ul>
+			</div>
+			<div>
+				<h2>This site</h2>
+				<ul>
+					<li><a href="/about-james-irving-swift/">About me</a></li>
+					<li><a href="/privacy-policy/">Privacy policy</a></li>
+					<li><a href="/rss.xml">RSS feed</a></li>
+				</ul>
+			</div>
+		</div>
+	</div>
+
+	<div class="legal">
+		<p>© {year} James Irving-Swift</p>
+		<a href="#main">Back to the top</a>
+	</div>
+
+	{credits.length > 0 && <div class="credits">
+		<p>
+			Picture credits: {credits.join(' · ')}
+		</p>
+	</div>}
+</footer>
+
+<style>
+	.site-footer {
+		background: var(--ink);
+		color: var(--bg);
+		padding-block: clamp(3rem, 8vw, 6rem) 2rem;
+		margin-top: clamp(8rem, 14vw, 13rem);
+		overflow: hidden;
+	}
+
+	.site-footer :global(a:hover) {
+		color: var(--surface);
+	}
+
+	.name {
+		font-size: var(--step-head);
+		font-weight: 700;
+		letter-spacing: -0.02em;
+		line-height: 1.05;
+	}
+
+	.tagline {
+		margin-top: 0.5rem;
+		font-size: clamp(1.125rem, 1rem + 0.4vw, 1.375rem);
+	}
+
+	.row {
+		display: grid;
+		gap: 3rem;
+		margin-top: clamp(2.5rem, 5vw, 3.5rem);
+	}
+
+	@media (min-width: 60rem) {
+		.row {
+			grid-template-columns: 5fr 7fr;
+			gap: 2rem;
+		}
+	}
+
+	ul {
+		list-style: none;
+		margin: 0;
+		padding: 0;
+	}
+
+	.places li + li {
+		margin-top: 0.35rem;
+	}
+
+	.places a {
+		display: inline-block;
+		font-size: clamp(1.375rem, 1.1rem + 0.8vw, 1.875rem);
+		font-weight: 700;
+		line-height: 1.25;
+		text-decoration: none;
+		transition:
+			color var(--t-hover) ease,
+			transform var(--t-hover) var(--ease-out);
+	}
+
+	.places a:hover {
+		transform: translateX(0.25em);
+	}
+
+	.links {
+		display: grid;
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+		gap: 2rem;
+		align-content: start;
+	}
+
+	@media (min-width: 40rem) {
+		.links {
+			grid-template-columns: 1fr 1fr;
+		}
+	}
+
+	.links h2 {
+		font-size: var(--step-body);
+		font-weight: 700;
+		margin-bottom: 0.6rem;
+	}
+
+	.links li + li {
+		margin-top: 0.25rem;
+	}
+
+	.links a {
+		font-size: var(--step-body);
+	}
+
+	.legal {
+		display: flex;
+		justify-content: space-between;
+		gap: 1rem;
+		margin-top: clamp(4rem, 7vw, 6rem);
+		font-size: var(--step-small);
+	}
+
+	.credits {
+		margin-top: 1.25rem;
+		font-size: 1rem;
+		max-width: 62ch;
+		opacity: 0.85;
+	}
+</style>
