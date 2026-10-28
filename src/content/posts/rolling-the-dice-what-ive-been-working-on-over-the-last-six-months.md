@@ -1,9 +1,10 @@
 ---
 title: 'Rolling the Dice: What I’ve Been Working On Over the Last Six Months'
+seoTitle: 'Rolling the Dice: Recruitment and Six Months of Expo Apps'
 description: Leaving Amenitiz, trying developer-led tech recruitment, and the Expo projects that followed — CPOURNOUS, 11310.com, VegVisits and a stealth game.
 pubDate: 2025-09-01T11:21:29Z
 updatedDate: 2025-09-01T11:22:52Z
-categories: []
+categories: [Development]
 cover: ../../assets/found/dice.jpg
 coverAlt: 'Two dice, one white and one red'
 coverCredit: '“Spielwürfel” by Schlurcher, CC BY 4.0, via Wikimedia Commons'

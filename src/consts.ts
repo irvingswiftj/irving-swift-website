@@ -1,6 +1,7 @@
 export const SITE_TITLE = 'Irving-Swift';
 export const SITE_DESCRIPTION =
-	"A collection of tip-bits by James Irving-Swift — software development notes, setups and opinions.";
+	'Notes by James Irving-Swift, a CTO in Andalucía: Expo and React Native fixes, Astro, developer setups and opinions on WordPress and AI.';
+export const HOME_TITLE = 'James Irving-Swift – Notes on Expo, Astro & Dev Setups';
 export const AUTHOR = 'James Irving-Swift';
 
 export const SOCIAL_LINKS = [

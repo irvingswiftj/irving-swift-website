@@ -1,8 +1,9 @@
 ---
 title: 'PHP2shell Was the Final Straw: Why I Moved From WordPress to Astro'
-description: One of our WordPress sites was compromised, I restored it from a backup and decided I was done. Why I've moved to Astro and Markdown, and why I don't think I need a CMS or Yoast anymore.
+seoTitle: 'Why I Moved From WordPress to Astro (PHP2shell)'
+description: A WordPress site of ours was hit by PHP2shell. Why I've moved to Astro and Markdown, and why I don't think I need a CMS or Yoast anymore.
 pubDate: 2026-10-26T09:00:00Z
-categories: [Wordpress, Opinions]
+categories: [WordPress, Opinions]
 cover: ../../assets/uploads/2024/10/lavi-perchik-fSqYwKWzwhk-unsplash-scaled.jpg
 coverAlt: WordPress development on a laptop screen
 ---

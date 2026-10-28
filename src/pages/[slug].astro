@@ -4,6 +4,7 @@ import { Image, getImage } from 'astro:assets';
 import Base from '../layouts/Base.astro';
 import FormattedDate from '../components/FormattedDate.astro';
 import { getPublishedPosts, categorySlug } from '../lib/posts';
+import { schemaId, breadcrumbs } from '../lib/schema';
 
 // Posts and pages share the WordPress-style root permalink: /<slug>/
 export async function getStaticPaths() {
@@ -20,15 +21,47 @@ const { Content } = await render(entry);
 const post = kind === 'post' ? (entry as Awaited<ReturnType<typeof getPublishedPosts>>[number]) : null;
 const cover = post?.data.cover;
 const ogImage = cover ? (await getImage({ src: cover, width: 1200, format: 'jpg' })).src : undefined;
+
+const url = new URL(`/${entry.id}/`, Astro.site).href;
+const firstCategory = post?.data.categories[0];
+const schema = post
+	? [
+			{
+				'@type': 'BlogPosting',
+				'@id': `${url}#article`,
+				mainEntityOfPage: url,
+				headline: post.data.title,
+				description: post.data.description,
+				...(ogImage && { image: new URL(ogImage, Astro.site).href }),
+				datePublished: post.data.pubDate.toISOString(),
+				dateModified: (post.data.updatedDate ?? post.data.pubDate).toISOString(),
+				...(post.data.categories.length > 0 && { articleSection: post.data.categories }),
+				inLanguage: 'en-GB',
+				author: { '@id': schemaId('person') },
+				publisher: { '@id': schemaId('person') },
+				isPartOf: { '@id': schemaId('website') },
+			},
+			firstCategory
+				? breadcrumbs(
+						[`${firstCategory} notes`, `/category/${categorySlug(firstCategory)}/`],
+						[post.data.title, `/${entry.id}/`],
+					)
+				: breadcrumbs([post.data.title, `/${entry.id}/`]),
+		]
+	: entry.id === 'about-james-irving-swift'
+		? [{ '@type': 'ProfilePage', url, name: entry.data.title, mainEntity: { '@id': schemaId('person') } }]
+		: [];
 ---
 
 <Base
 	title={entry.data.title}
+	seoTitle={post?.data.seoTitle}
 	description={entry.data.description}
 	image={ogImage}
 	type={post ? 'article' : 'website'}
 	publishedTime={post?.data.pubDate}
 	credits={post?.data.coverCredit ? [post.data.coverCredit] : []}
+	schema={schema}
 >
 	{post && <div class="progress" data-progress aria-hidden="true" />}
 	<article>

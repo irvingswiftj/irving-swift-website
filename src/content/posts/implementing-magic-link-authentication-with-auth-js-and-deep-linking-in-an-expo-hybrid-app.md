@@ -1,5 +1,6 @@
 ---
 title: Implementing Magic Link Authentication with Auth.js and Deep Linking in an Expo Hybrid App
+seoTitle: 'Auth.js Magic Link Login in Expo with Deep Linking'
 description: How I made Auth.js magic-link sign-in work across both the web and an Expo hybrid app using a second verification token and a deep link.
 pubDate: 2025-02-10T08:38:26Z
 updatedDate: 2025-02-10T09:06:16Z

@@ -3,7 +3,7 @@ title: The WordPress Plugins I Use and Why
 description: The key WordPress plugins I rely on for performance, security, SEO and email — with the pros and cons of each.
 pubDate: 2024-10-29T10:09:08Z
 updatedDate: 2024-10-29T10:10:00Z
-categories: [Wordpress]
+categories: [WordPress]
 cover: ../../assets/uploads/2024/10/lavi-perchik-fSqYwKWzwhk-unsplash-scaled.jpg
 coverAlt: WordPress development on a laptop screen
 ---

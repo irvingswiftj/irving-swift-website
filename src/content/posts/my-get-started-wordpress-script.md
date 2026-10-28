@@ -3,7 +3,7 @@ title: My get started WordPress script
 description: The bash script I use to spin up a new WordPress site on my server — wp-cli install, Apache vhost and a Let's Encrypt certificate in one go.
 pubDate: 2024-10-29T11:30:14Z
 updatedDate: 2024-10-30T06:55:57Z
-categories: [Wordpress]
+categories: [WordPress]
 cover: ../../assets/uploads/2024/10/lavi-perchik-fSqYwKWzwhk-unsplash-scaled.jpg
 coverAlt: WordPress development on a laptop screen
 ---
@@ -12,7 +12,7 @@ As a developer, laziness is key to my success! I don't want to repeat myself and
 
 When someone needs a new website and they want it set up on my server, I have a script for this. It is stored in my user's home directory and it is called `install_wp_site.sh`.
 
-Prerequisites:
+## Prerequisites
 
 1. letsencrypt
 2. apache2
@@ -21,6 +21,8 @@ Prerequisites:
 Assumption is that your apache user is `www-data`
 
 Please note: **Do not run as root**
+
+## The install script
 
 ```bash
 #!/bin/bash
@@ -150,6 +152,8 @@ sudo systemctl reload apache2
 echo "Completed setting up ${DOMAIN}"
 ```
 
+## The Apache virtual host template
+
 In the same directory I have a apache configuration template called `000-DOMAIN.conf` it looks like this:
 
 ```apache
@@ -204,11 +208,11 @@ UseCanonicalName On
 </IfModule>
 ```
 
-What does it look like when you run it?
+## Running the script
 
 ![Terminal output from running the install script](../../assets/uploads/2024/10/image-8.png)
 
-So what does this script do ?
+## What the script does
 
 It has a few steps:
 
