@@ -20,13 +20,13 @@ The solution: **Ansible**!
 
 This guide explains how to set up your MacBook with Ansible, ensuring a seamless and efficient setup process. You’ll learn how to replicate your ideal environment effortlessly—whether it’s for a fresh start or disaster recovery.
 
-### Why Ansible for Mac Setup?
+## Why Ansible for Mac Setup?
 
 When researching Ansible scripts for macOS setups, I came across an excellent example: [Talking Quickly’s macOS setup](https://www.talkingquickly.co.uk/2021/01/macos-setup-with-ansible/). This served as the foundation for my customized setup script.
 
 You can find my version here: [macOS-setup on GitHub](https://github.com/irvingswiftj/macos-setup).
 
-### How to Use the Ansible Script
+## How to Use the Ansible Script
 
 **Step 1: Initial Setup**
 
@@ -50,13 +50,13 @@ bin/bootstrap
 bin/apply
 ```
 
-### What Does the Script Do?
+## What Does the Script Do?
 
 The script automates the installation and configuration of essential tools and settings for your MacBook. It’s designed to save you hours of manual setup by handling everything from app installations to system preferences.
 
 For a detailed list of what the script accomplishes, check the [README.md file](https://github.com/irvingswiftj/macos-setup). Else for a more detailed overview of everything included, check out [My setup of development tools for 2024/2025](/my-current-developer-tool-setup/).
 
-### Why Automating Mac Setup is a Game Changer
+## Why Automating Mac Setup is a Game Changer
 
 Using Ansible for your macOS setup has several advantages:
 
@@ -65,6 +65,6 @@ Using Ansible for your macOS setup has several advantages:
 3. **Scalability**: Perfect for team environments or multiple devices.
 4. **Disaster Recovery**: Restore your setup quickly in case of hardware failure.
 
-### Ready to Set Up Your Mac with Ansible?
+## Ready to Set Up Your Mac with Ansible?
 
 Check out the [macOS-setup repository](https://github.com/irvingswiftj/macos-setup) on GitHub, and get started today! By leveraging the power of Ansible, you’ll never dread setting up a new laptop again.

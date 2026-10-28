@@ -3,10 +3,13 @@ import '@fontsource-variable/tiktok-sans/wdth.css';
 import '../styles/global.css';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
-import { SITE_TITLE, SITE_DESCRIPTION, AUTHOR } from '../consts';
+import { SITE_TITLE, SITE_DESCRIPTION, HOME_TITLE, AUTHOR, SOCIAL_LINKS } from '../consts';
+import { schemaId } from '../lib/schema';
 
 interface Props {
 	title?: string;
+	/** Shorter <title> for search results; the headline stays `title` everywhere else */
+	seoTitle?: string;
 	description?: string;
 	image?: string;
 	type?: 'website' | 'article';
@@ -15,20 +18,51 @@ interface Props {
 	overlayHeader?: boolean;
 	/** Credit lines for found pictures on this page, printed in the footer */
 	credits?: string[];
+	/** Extra schema.org nodes for this page, added to the site-wide WebSite and Person */
+	schema?: Record<string, unknown>[];
 }
 
 const {
 	title,
+	seoTitle,
 	description = SITE_DESCRIPTION,
 	image,
 	type = 'website',
 	publishedTime,
 	overlayHeader = false,
 	credits = [],
+	schema = [],
 } = Astro.props;
-const fullTitle = title ? `${title} – ${SITE_TITLE}` : `${SITE_TITLE} – Notes on building software`;
+// Search results cut titles at about 60 characters, so the site name only goes on when it fits
+const pageTitle = seoTitle ?? title;
+const suffixed = `${pageTitle} – ${SITE_TITLE}`;
+const fullTitle = pageTitle ? (suffixed.length <= 60 ? suffixed : pageTitle) : HOME_TITLE;
 const canonical = new URL(Astro.url.pathname, Astro.site);
 const ogImage = new URL(image ?? '/favicon.png', Astro.site);
+
+const jsonLd = {
+	'@context': 'https://schema.org',
+	'@graph': [
+		{
+			'@type': 'WebSite',
+			'@id': schemaId('website'),
+			url: Astro.site!.href,
+			name: SITE_TITLE,
+			description: SITE_DESCRIPTION,
+			inLanguage: 'en-GB',
+			publisher: { '@id': schemaId('person') },
+		},
+		{
+			'@type': 'Person',
+			'@id': schemaId('person'),
+			name: AUTHOR,
+			url: new URL('/about-james-irving-swift/', Astro.site).href,
+			jobTitle: 'CTO',
+			sameAs: SOCIAL_LINKS.map((l) => l.href),
+		},
+		...schema,
+	],
+};
 ---
 
 <!doctype html>
@@ -59,6 +93,7 @@ const ogImage = new URL(image ?? '/favicon.png', Astro.site);
 		{publishedTime && <meta property="article:published_time" content={publishedTime.toISOString()} />}
 		<meta name="twitter:card" content={image ? 'summary_large_image' : 'summary'} />
 		<meta name="generator" content={Astro.generator} />
+		<script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
 	</head>
 	<body>
 		<a class="skip-link" href="#main">Skip to content</a>

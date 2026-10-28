@@ -28,6 +28,8 @@ And you are presented with the following screen:
 
 ![Expo dev server output with a QR code](../../assets/uploads/2024/11/image-4.png)
 
+## The problem: Expo Go can't connect
+
 Great! Let's scan the barcode and we should be up and running! But, No! You are presented with this:
 
 <div class="image-row narrow">
@@ -38,11 +40,15 @@ Great! Let's scan the barcode and we should be up and running! But, No! You are 
 
 </div>
 
+## The fix: run Expo with `--tunnel`
+
 This is my solution to get around this issue:
 
 ```bash
 $ npx expo start --tunnel
 ```
+
+## Add a `start-wsl` script to package.json
 
 But rather than entering this every time, I update my package.json with an entry for `start-wsl`
 

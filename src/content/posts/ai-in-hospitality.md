@@ -1,9 +1,10 @@
 ---
 title: 'AI in Hospitality: Reimagining the Future of Travel Booking'
+seoTitle: 'AI in Hospitality: Will AI Agents Replace OTAs?'
 description: Will AI assistants replace OTAs and direct-booking websites? Why the hospitality industry should start preparing for an API-first future.
 pubDate: 2025-04-03T10:59:56Z
 updatedDate: 2025-04-03T12:52:40Z
-categories: []
+categories: [Opinions]
 cover: ../../assets/found/travel-agency-bergen.jpg
 coverAlt: 'A travel agency counter in Bergen, around 1950'
 coverCredit: 'Travel agency, Bergen, 1950–52, National Library of Norway, public domain, via Wikimedia Commons'

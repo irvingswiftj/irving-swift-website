@@ -5,7 +5,7 @@ import codeTheme from './src/code-theme.mjs';
 
 // https://astro.build/config
 export default defineConfig({
-	site: 'https://irving-swift.com',
+	site: 'https://www.irving-swift.com',
 	trailingSlash: 'always',
 	integrations: [sitemap()],
 	markdown: {

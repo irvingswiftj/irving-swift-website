@@ -1,5 +1,6 @@
 ---
 title: My Current Developer Tool Setup 2024/2025
+seoTitle: 'My Developer Tool Setup: Editors, Terminals & CLI Tools'
 description: The editors, terminals, CLI tools, browsers and utilities in my day-to-day developer setup — and the ones I've moved away from.
 pubDate: 2024-12-27T11:34:18Z
 updatedDate: 2025-01-18T09:50:31Z
@@ -69,7 +70,7 @@ Old habits die hard, and honestly, I have not found a better tool to use for qui
 
 **Warp**
 
-- **Why It’s in My Setup**: Warp is a relatively new addition to my setup, and I love its modern approach to terminal use. The shared sessions and AI-powered auto-completion make it feel innovative and efficient. For me, this is probably the biggest game changer this year! If you want it, this is [my referral link](https://app.warp.dev/referral/MELL3R).
+- **Why It’s in My Setup**: Warp is a relatively new addition to my setup, and I love its modern approach to terminal use. The shared sessions and AI-powered auto-completion make it feel innovative and efficient. For me, this is probably the biggest game changer this year! If you want it, this is <a href="https://app.warp.dev/referral/MELL3R" rel="sponsored noopener">my referral link</a>.
 
 #### My Go-To Terminal Commands:
 
@@ -106,7 +107,7 @@ You might notice that **Docker** and **Kubernetes**—two essential tools in mod
 
 **Superhuman**
 
-- **Why I’m Testing It**: I’m currently on the trial for Superhuman, and so far, I’m really enjoying it. The speed and minimalistic interface have been great for managing my inbox. My hope is to continue using it effectively enough to justify the hefty price tag. If you want to try it out, please use my [referral link](https://superhuman.com/refer/tnw03qfq) (gives me an extra free month!).
+- **Why I’m Testing It**: I’m currently on the trial for Superhuman, and so far, I’m really enjoying it. The speed and minimalistic interface have been great for managing my inbox. My hope is to continue using it effectively enough to justify the hefty price tag. If you want to try it out, please use my <a href="https://superhuman.com/refer/tnw03qfq" rel="sponsored noopener">referral link</a> (gives me an extra free month!).
 
 **WhatsApp**
 

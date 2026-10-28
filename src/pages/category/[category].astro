@@ -2,6 +2,7 @@
 import Base from '../../layouts/Base.astro';
 import NoteIndex from '../../components/NoteIndex.astro';
 import { getPublishedPosts, categorySlug } from '../../lib/posts';
+import { breadcrumbs } from '../../lib/schema';
 
 export async function getStaticPaths() {
 	const posts = await getPublishedPosts();
@@ -13,9 +14,23 @@ export async function getStaticPaths() {
 }
 
 const { name, posts } = Astro.props;
+
+// Search snippets for each category; a new category falls back to the generic line
+const descriptions: Record<string, string> = {
+	Development:
+		'Development notes by James Irving-Swift: Expo and React Native fixes, Auth.js magic links, WSL2, Ansible and the tools in my setup.',
+	Opinions:
+		'Opinions from James Irving-Swift on operating systems, developer tools, AI in hospitality and why I moved this site from WordPress to Astro.',
+	WordPress:
+		'WordPress notes by James Irving-Swift: the plugins I used, my wp-cli install script, and why I eventually moved this site to Astro.',
+};
 ---
 
-<Base title={`${name} notes`} description={`Notes by James Irving-Swift filed under ${name}.`}>
+<Base
+	title={`${name} notes`}
+	description={descriptions[name] ?? `Notes by James Irving-Swift filed under ${name}.`}
+	schema={[breadcrumbs([`${name} notes`, `/category/${categorySlug(name)}/`])]}
+>
 	<section class="frame category" aria-labelledby="category-heading">
 		<div class="head">
 			<h1 id="category-heading" data-reveal>{name} notes</h1>
